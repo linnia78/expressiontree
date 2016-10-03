@@ -53,15 +53,19 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="ExpressionTree2\Blank\BlankParser.cs" />
+    <Compile Include="ExpressionTree2\Blank\BlankReader.cs" />
     <Compile Include="ExpressionTree2\ExpressionEvaluator.cs" />
     <Compile Include="ExpressionTree2\ExpressionEvaluatorTest.cs" />
     <Compile Include="ExpressionTree2\ExpressionReader.cs" />
-    <Compile Include="ExpressionTree2\IExpressionParser.cs" />
-    <Compile Include="ExpressionTree2\IExpressionReader.cs" />
+    <Compile Include="ExpressionTree2\ExpressionParser.cs" />
     <Compile Include="ExpressionTree2\Numeric\NumericParser.cs" />
-    <Compile Include="ExpressionTree2\Operation.cs" />
-    <Compile Include="ExpressionTree2\OperationReader.cs" />
     <Compile Include="ExpressionTree2\Numeric\NumericReader.cs" />
+    <Compile Include="ExpressionTree2\Operation\Operation.cs" />
+    <Compile Include="ExpressionTree2\Operation\OperationParser.cs" />
+    <Compile Include="ExpressionTree2\Operation\OperationReader.cs" />
+    <Compile Include="ExpressionTree2\Quotation\QuotationParser.cs" />
+    <Compile Include="ExpressionTree2\Quotation\QuotationReader.cs" />
     <Compile Include="ExpressionTree2\ReservedWord\ReservedWord.cs" />
     <Compile Include="ExpressionTree2\ReservedWord\ReservedWordParser.cs" />
     <Compile Include="ExpressionTree2\ReservedWord\ReservedWordReader.cs" />

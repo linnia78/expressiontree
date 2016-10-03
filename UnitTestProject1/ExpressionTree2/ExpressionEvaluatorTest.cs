@@ -27,13 +27,13 @@ namespace UnitTestProject1.ExpressionTree2
             var expression2 = evaluator.Build("true && false");
             var expression3 = evaluator.Build("false && false");
             //Act
-            var @truthy = expression();
-            var @falsy = expression2();
-            var @falsy2 = expression3();
+            var result = expression();
+            var result2 = expression2();
+            var result3 = expression3();
             //Assert
-            Assert.AreEqual(@truthy, true && true);
-            Assert.AreEqual(@falsy, true && false);
-            Assert.AreEqual(@falsy2, false && false);
+            Assert.AreEqual(result, true && true);
+            Assert.AreEqual(result2, true && false);
+            Assert.AreEqual(result3, false && false);
         }
 
         [TestMethod]
@@ -45,13 +45,13 @@ namespace UnitTestProject1.ExpressionTree2
             var expression2 = evaluator.Build("true || false");
             var expression3 = evaluator.Build("false || false");
             //Act
-            var @truthy = expression();
-            var @truthy2 = expression2();
-            var @falsy = expression3();
+            var result = expression();
+            var result2 = expression2();
+            var result3 = expression3();
             //Assert
-            Assert.AreEqual(@truthy, true || true);
-            Assert.AreEqual(@truthy2, true || false);
-            Assert.AreEqual(@falsy, false || false);
+            Assert.AreEqual(result, true || true);
+            Assert.AreEqual(result2, true || false);
+            Assert.AreEqual(result3, false || false);
         }
 
         [TestMethod]
@@ -59,7 +59,17 @@ namespace UnitTestProject1.ExpressionTree2
         {
             //Arrange
             var evaluator = new ExpressionEvaluator();
-
+            var expression = evaluator.Build("true && false || true");
+            var expression2 = evaluator.Build("true || false && true");
+            var expression3 = evaluator.Build("true || false || true && true && false");
+            //Act
+            var result = expression();
+            var result2 = expression2();
+            var result3 = expression3();
+            //Assert
+            Assert.AreEqual(result, true && false || true);
+            Assert.AreEqual(result2, true || false && true);
+            Assert.AreEqual(result3, true || false || true && true && false);
         }
 
         [TestMethod]
@@ -67,14 +77,35 @@ namespace UnitTestProject1.ExpressionTree2
         {
             //Arrange
             var evaluator = new ExpressionEvaluator();
-            var truthyExpression = evaluator.Build("true");
-            var falsyExpression = evaluator.Build("false");
+            var expression = evaluator.Build("true");
+            var expression2 = evaluator.Build("false");
             //Act
-            var @true = truthyExpression();
-            var @false = falsyExpression();
+            var result = expression();
+            var result2 = expression2();
             //Assert
-            Assert.AreEqual(@true, true);
-            Assert.AreEqual(@false, false);
+            Assert.AreEqual(result, true);
+            Assert.AreEqual(result2, false);
+        }
+
+        [TestMethod]
+        public void should_evaulate_string_equivalence_comparision()
+        {
+            //Arrange
+            var evaluator = new ExpressionEvaluator();
+            var expression = evaluator.Build(@"""word"" == ""word""");
+            var expression2 = evaluator.Build(@"""word"" != ""word""");
+            var expression3 = evaluator.Build(@"""word"" == ""word2""");
+            var expression4 = evaluator.Build(@"""word"" != ""word2""");
+            //Act
+            var result = expression();
+            var result2 = expression2();
+            var result3 = expression3();
+            var result4 = expression4();
+            //Assert
+            Assert.AreEqual(result, "word".Equals("word"));
+            Assert.AreEqual(result2, !"word".Equals("word"));
+            Assert.AreEqual(result3, "word".Equals("word2"));
+            Assert.AreEqual(result4, !"word".Equals("word2"));
         }
     }
 }

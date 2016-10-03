@@ -7,28 +7,33 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class ExpressionReader
+    public interface IExpressionReader
     {
-        public static readonly ExpressionReader NumericReader = new NumericReader();
-
+        string ReadExpression(TextReader reader);
+    }
+    public abstract class ExpressionReader : IExpressionReader
+    {
         protected readonly Func<char, bool> _readCondition;
         public ExpressionReader(Func<char, bool> readCondition)
         {
             this._readCondition = readCondition;
         }
 
-        public virtual string ReadExpression(TextReader reader) { throw new NotImplementedException(); }
+        public virtual string ReadExpression(TextReader textReader)
+        {
+            return this.ReadWhile(textReader, this._readCondition);
+        }
         
-        protected string ReadWhile(TextReader reader, Func<char, bool> condition)
+        protected string ReadWhile(TextReader textReader, Func<char, bool> readCondition)
         {
             var expression = string.Empty;
             int peek;
-            while ((peek = reader.Peek()) > -1)
+            while ((peek = textReader.Peek()) > -1)
             {
                 var next = (char)peek;
-                if (condition(next))
+                if (readCondition(next))
                 {
-                    expression += (char)reader.Read();
+                    expression += (char)textReader.Read();
                 }
                 else
                 {
@@ -36,6 +41,11 @@ namespace UnitTestProject1.ExpressionTree2
                 }
             }
             return expression;
+        }
+
+        protected void SkipOneChar(TextReader textReader)
+        {
+            if (textReader.Peek() > -1) { textReader.Read(); }
         }
     }
 }

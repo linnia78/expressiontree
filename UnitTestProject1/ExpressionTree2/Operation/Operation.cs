@@ -46,6 +46,9 @@ namespace UnitTestProject1.ExpressionTree2
             { "&&", LogicalAnd },
             { "||", LogicalOr }
         };
+        public static readonly List<char> FirstLevelSymbol = Operations.Select(x => x.Key[0]).ToList();
+        public static readonly List<char> SecondLevelSymbol = Operations.Where(x => x.Key.Length > 1).Select(x => x.Key[1]).ToList();
+        public static readonly List<char> ThirdLevelSymbol = Operations.Where(x => x.Key.Length > 2).Select(x => x.Key[2]).ToList();
 
         private Operation(int precedence)
         {

@@ -3,3 +3,8 @@ C:\My\Projects\CSharpPlay\UnitTestProject1\bin\Debug\UnitTestProject1.pdb
 C:\My\Projects\CSharpPlay\UnitTestProject1\obj\Debug\UnitTestProject1.csprojResolveAssemblyReference.cache
 C:\My\Projects\CSharpPlay\UnitTestProject1\obj\Debug\UnitTestProject1.dll
 C:\My\Projects\CSharpPlay\UnitTestProject1\obj\Debug\UnitTestProject1.pdb
+C:\My\Work\expressiontree\UnitTestProject1\bin\Debug\UnitTestProject1.dll
+C:\My\Work\expressiontree\UnitTestProject1\bin\Debug\UnitTestProject1.pdb
+C:\My\Work\expressiontree\UnitTestProject1\obj\Debug\UnitTestProject1.csprojResolveAssemblyReference.cache
+C:\My\Work\expressiontree\UnitTestProject1\obj\Debug\UnitTestProject1.dll
+C:\My\Work\expressiontree\UnitTestProject1\obj\Debug\UnitTestProject1.pdb

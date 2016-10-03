@@ -8,32 +8,14 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class ReservedWordParser : IExpressionParser
+    public class ReservedWordParser : ExpressionParser
     {
-        //public static bool IsReservedWord(string word)
-        //{
-        //    return ReservedWord.Words.ContainsKey(word);
-        //}
 
-        //public static Expression GetExpression(string word)
-        //{
-        //    return ((ReservedWord)word).Expression;
-        //}
-        private readonly ExpressionReader _reader;
-        private readonly Func<char, bool> _condition;
-        public ReservedWordParser(ExpressionReader reader)
-        {
-            this._reader = reader;
-            this._condition = char.IsLetter;
-        }
-        public bool CanParse(char @char)
-        {
-            return this._condition(@char);
-        }
+        public ReservedWordParser(IExpressionReader expressionReader) : base(expressionReader, char.IsLetter) { }
 
-        public Expression ReadExpression(TextReader reader)
+        public override Expression ParseExpression(TextReader reader)
         {
-            string expression = this._reader.ReadExpression(reader);
+            string expression = this._expressionReader.ReadExpression(reader);
             return ((ReservedWord)expression).Expression;
         }
     }

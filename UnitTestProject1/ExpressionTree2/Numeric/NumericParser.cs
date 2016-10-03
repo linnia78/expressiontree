@@ -8,26 +8,14 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class NumericParser : IExpressionParser
+    public class NumericParser : ExpressionParser
     {
-        private readonly ExpressionReader _reader;
-        private readonly Func<char, bool> _parseCondition;
+        public NumericParser(IExpressionReader expressionReader) : base(expressionReader, char.IsDigit) { }
 
-        public NumericParser(ExpressionReader reader)
-        {
-            this._reader = reader;
-            this._parseCondition = char.IsDigit;
-        }
-
-        public bool CanParse(char @char)
-        {
-            return this._parseCondition(@char);
-        }
-
-        public Expression ReadExpression(TextReader reader)
+        public override Expression ParseExpression(TextReader textReader)
         {
             decimal result;
-            string expression = this._reader.ReadExpression(reader);
+            string expression = base._expressionReader.ReadExpression(textReader);
             if (decimal.TryParse(expression, out result))
             {
                 return Expression.Constant(result);

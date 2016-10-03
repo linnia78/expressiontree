@@ -9,10 +9,6 @@ namespace UnitTestProject1.ExpressionTree2
 {
     public class OperationReader
     {
-        private static readonly List<char> FirstLevelSymbol = Operation.Operations.Select(x => x.Key[0]).ToList();
-        private static readonly List<char> SecondLevelSymbol = Operation.Operations.Where(x => x.Key.Length > 1).Select(x => x.Key[1]).ToList();
-        private static readonly List<char> ThirdLevelSymbol = Operation.Operations.Where(x => x.Key.Length > 2).Select(x => x.Key[2]).ToList();
-        
         public static bool IsOperation(TextReader reader)
         {
             return FirstLevelSymbol.Contains((char)reader.Peek());

@@ -16,7 +16,9 @@ namespace UnitTestProject1.ExpressionTree2
         private readonly IEnumerable<IExpressionParser> _parsers = new IExpressionParser[]
         {
             new ReservedWordParser(new ReservedWordReader()),
-            new NumericParser(new NumericReader())
+            new NumericParser(new NumericReader()),
+            new QuotationParser(new QuotationReader()),
+            new BlankParser(new BlankReader())
         };
 
         public Func<bool> Build(string expression)
@@ -33,37 +35,11 @@ namespace UnitTestProject1.ExpressionTree2
                     var parser = _parsers.FirstOrDefault(x => x.CanParse(next));
                     if (parser != null)
                     {
-                        _expressionStack.Push(parser.ReadExpression(reader));
+                        var parsedExpression = parser.ParseExpression(reader);
+                        if (parsedExpression != null) {
+                            _expressionStack.Push(parsedExpression);
+                        }
                     }
-                    //else if (char.IsDigit(next))
-                    //{
-                    //    _expressionStack.Push(ReadOperand(reader));
-                    //}
-                    else if (next == '"')
-                    {
-                        reader.Read();
-                        _expressionStack.Push(Expression.Constant(Convert.ToString((char)reader.Read())));
-                        reader.Read();
-                    }
-                    else if (next == ' ')
-                    {
-                        reader.Read();
-                    }
-                    //else if (char.IsLetter(next))
-                    //{
-                    //    var symbol = string.Empty;
-                    //    do
-                    //    {
-                    //        symbol += ((char)reader.Read()).ToString();
-                    //    }
-                    //    while ((peek = reader.Peek()) > -1 && char.IsLetter((char)peek));
-
-                    //    if (ReservedWordParser.IsReservedWord(symbol))
-                    //    {
-                    //        _expressionStack.Push(ReservedWordParser.GetExpression(symbol));
-                    //    }
-
-                    //}
                     else if (OperationReader.IsOperation(reader))
                     {
                         var currentOperation = OperationReader.GetOperation(reader);
@@ -83,30 +59,6 @@ namespace UnitTestProject1.ExpressionTree2
             //var lambda = Expression.Lambda<Func<T, bool>>(_expressionStack.Pop(), dictionaryParameter);
             var lambda = Expression.Lambda<Func<bool>>(_expressionStack.Pop());
             return lambda.Compile();
-        }
-
-        private Expression ReadOperand(TextReader reader)
-        {
-            var operand = string.Empty;
-
-            int peek;
-
-            while ((peek = reader.Peek()) > -1)
-            {
-                var next = (char)peek;
-
-                if (char.IsDigit(next) || next == '.')
-                {
-                    reader.Read();
-                    operand += next;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            return Expression.Constant(decimal.Parse(operand));
         }
 
         private void EvaluateWhile(Func<bool> condition)
