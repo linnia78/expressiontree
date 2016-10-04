@@ -9,14 +9,9 @@ namespace UnitTestProject1.ExpressionTree2
 {
     public class OperationReader
     {
-        public static bool IsOperation(TextReader reader)
-        {
-            return FirstLevelSymbol.Contains((char)reader.Peek());
-        }
-
         public static Operation GetOperation(TextReader reader)
         {
-            var operation = Parse(reader, FirstLevelSymbol.Contains, SecondLevelSymbol.Contains, ThirdLevelSymbol.Contains);
+            var operation = Parse(reader, Operation.FirstLevelSymbol.Contains, Operation.SecondLevelSymbol.Contains, Operation.ThirdLevelSymbol.Contains);
             return (Operation)operation;
         }
 
@@ -28,6 +23,20 @@ namespace UnitTestProject1.ExpressionTree2
                 if (condition((char)reader.Peek()))
                 {
                     result += ((char)reader.Read());
+                }
+                else { break; }
+            }
+            return result;
+        }
+
+        public string ReadOperation(TextReader textReader)
+        {
+            string result = string.Empty;
+            foreach (var condition in new Func<char, bool>[] { Operation.FirstLevelSymbol.Contains, Operation.SecondLevelSymbol.Contains, Operation.ThirdLevelSymbol.Contains })
+            {
+                if (condition((char)textReader.Peek()))
+                {
+                    result += ((char)textReader.Read());
                 }
                 else { break; }
             }

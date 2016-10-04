@@ -8,23 +8,22 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public interface IExpressionParser
+    public interface IStatementParser
     {
         bool CanParse(char @char);
-        Expression ParseExpression(TextReader reader);
+        Statement ParseStatement(TextReader textReader, Expression param);
     }
-    public abstract class ExpressionParser : IExpressionParser
+    public abstract class StatementParser : IStatementParser
     {
-        protected readonly IExpressionReader _expressionReader;
+        protected readonly IStatementReader _expressionReader;
         protected readonly Func<char, bool> _parseCondition;
-        public ExpressionParser(IExpressionReader expressionReader, Func<char, bool> parseCondition)
+        public StatementParser(IStatementReader expressionReader, Func<char, bool> parseCondition)
         {
             this._expressionReader = expressionReader;
             this._parseCondition = parseCondition;
         }
 
         public virtual bool CanParse(char @char) { return _parseCondition(@char); }
-        public abstract Expression ParseExpression(TextReader textReader);
-
+        public abstract Statement ParseStatement(TextReader textReader, Expression param);
     }
 }

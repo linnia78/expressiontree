@@ -10,14 +10,22 @@ namespace UnitTestProject1.ExpressionTree2
 {
     public class OperationParser
     {
-        public OperationParser()
-        {
+        private readonly OperationReader _operationReader;
 
+        public OperationParser(OperationReader operationReader)
+        {
+            this._operationReader = operationReader;
         }
 
-        public override Expression ParseExpression(TextReader textReader)
+        public bool CanParse(char @char)
         {
-            string operation = base._expressionReader.ReadExpression(textReader);
+            return Operation.FirstLevelSymbol.Contains(@char);
+        }
+
+        public Operation ParseOperation(TextReader textReader)
+        {
+            string operation = this._operationReader.ReadOperation(textReader);
+            return (Operation)operation;
         }
     }
 }

@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class ReservedWord
+    public class ReservedWord : Statement
     {
-        public Expression Expression { get; private set; }
-
-        public static readonly ReservedWord True = new ReservedWord(Expression.Constant(true));
-        public static readonly ReservedWord False = new ReservedWord(Expression.Constant(false));
+        public static readonly ReservedWord True = new ReservedWord(typeof(bool), Expression.Constant(true));
+        public static readonly ReservedWord False = new ReservedWord(typeof(bool), Expression.Constant(false));
 
         public static readonly Dictionary<string, ReservedWord> Words = new Dictionary<string, ReservedWord>
         {
@@ -20,10 +18,7 @@ namespace UnitTestProject1.ExpressionTree2
             { "false", False }
         };
 
-        public ReservedWord(Expression expression)
-        {
-            this.Expression = expression;
-        }
+        public ReservedWord(Type statementType, Expression expression) : base(statementType, expression) { }
 
         public static explicit operator ReservedWord(string symbol)
         {

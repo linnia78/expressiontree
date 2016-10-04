@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class ReservedWordParser : ExpressionParser
+    public class ReservedWordParser : StatementParser
     {
 
-        public ReservedWordParser(IExpressionReader expressionReader) : base(expressionReader, char.IsLetter) { }
+        public ReservedWordParser(IStatementReader expressionReader) : base(expressionReader, char.IsLetter) { }
 
-        public override Expression ParseExpression(TextReader reader)
+        public override Statement ParseStatement(TextReader reader, Expression param)
         {
-            string expression = this._expressionReader.ReadExpression(reader);
-            return ((ReservedWord)expression).Expression;
+            string expression = this._expressionReader.ReadStatement(reader);
+            return (ReservedWord)expression;
         }
     }
 }

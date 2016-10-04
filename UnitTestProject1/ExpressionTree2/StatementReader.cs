@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public interface IExpressionReader
+    public interface IStatementReader
     {
-        string ReadExpression(TextReader reader);
+        string ReadStatement(TextReader reader);
     }
-    public abstract class ExpressionReader : IExpressionReader
+    public abstract class StatementReader : IStatementReader
     {
         protected readonly Func<char, bool> _readCondition;
-        public ExpressionReader(Func<char, bool> readCondition)
+        public StatementReader(Func<char, bool> readCondition)
         {
             this._readCondition = readCondition;
         }
 
-        public virtual string ReadExpression(TextReader textReader)
+        public virtual string ReadStatement(TextReader textReader)
         {
             return this.ReadWhile(textReader, this._readCondition);
         }

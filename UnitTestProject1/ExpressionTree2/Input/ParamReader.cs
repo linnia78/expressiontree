@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class QuotationReader : StatementReader
+    public class ParamReader : StatementReader
     {
-        public QuotationReader() : base((@char) => @char != '"') { }
+        public ParamReader() : base((@char) => @char != ']') { }
         public override string ReadStatement(TextReader textReader)
         {
             base.SkipOneChar(textReader);

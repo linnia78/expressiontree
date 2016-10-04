@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class BlankParser : ExpressionParser
+    public class BlankParser : StatementParser
     {
-        public BlankParser(IExpressionReader expressionReader) : base(expressionReader, @char => @char == ' ') { }
+        public BlankParser(IStatementReader expressionReader) : base(expressionReader, @char => @char == ' ') { }
 
-        public override Expression ParseExpression(TextReader textReader)
+        public override Statement ParseStatement(TextReader textReader, Expression param)
         {
-            base._expressionReader.ReadExpression(textReader);
-            return null;
+            base._expressionReader.ReadStatement(textReader);
+            return Statement.CreateStatement(null);
         }
     }
 }

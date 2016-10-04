@@ -107,5 +107,18 @@ namespace UnitTestProject1.ExpressionTree2
             Assert.AreEqual(result3, "word".Equals("word2"));
             Assert.AreEqual(result4, !"word".Equals("word2"));
         }
+
+        [TestMethod]
+        public void should_handle_dictionary_parameters()
+        {
+            //Arrange
+            var evaluator = new ExpressionEvaluator();
+            var dictionary = new Dictionary<string, string> { { "word", "word" } };
+            var expression = evaluator.Build2(@"""word"" == [word]");
+            //Act
+            var result = expression(dictionary);
+            //Assert
+            Assert.AreEqual(result, "word".Equals(dictionary["word"]));
+        }
     }
 }

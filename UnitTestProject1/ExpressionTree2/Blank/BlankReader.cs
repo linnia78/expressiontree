@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class BlankReader : ExpressionReader
+    public class BlankReader : StatementReader
     {
         public BlankReader() : base(@char => @char == ' ') { }
     }

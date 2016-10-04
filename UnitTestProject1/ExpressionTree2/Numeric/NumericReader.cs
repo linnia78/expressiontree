@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class NumericReader : ExpressionReader
+    public class NumericReader : StatementReader
     {
         public NumericReader() : base((@char) => char.IsDigit(@char) || @char == '.') { }
     }

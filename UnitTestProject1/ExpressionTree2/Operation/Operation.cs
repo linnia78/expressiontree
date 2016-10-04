@@ -89,7 +89,7 @@ namespace UnitTestProject1.ExpressionTree2
             }
             else
             {
-                throw new InvalidCastException();
+                throw new InvalidCastException($"Unknown operator {operation}.");
             }
         }
     }

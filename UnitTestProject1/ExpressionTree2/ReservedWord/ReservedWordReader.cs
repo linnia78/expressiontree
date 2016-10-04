@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class ReservedWordReader : ExpressionReader
+    public class ReservedWordReader : StatementReader
     {
         public ReservedWordReader() : base(char.IsLetter) { }
     }

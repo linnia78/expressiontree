@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace UnitTestProject1.ExpressionTree2
 {
-    public class NumericParser : ExpressionParser
+    public class NumericParser : StatementParser
     {
-        public NumericParser(IExpressionReader expressionReader) : base(expressionReader, char.IsDigit) { }
+        public NumericParser(IStatementReader expressionReader) : base(expressionReader, char.IsDigit) { }
 
-        public override Expression ParseExpression(TextReader textReader)
+        public override Statement ParseStatement(TextReader textReader, Expression param)
         {
             decimal result;
-            string expression = base._expressionReader.ReadExpression(textReader);
+            string expression = base._expressionReader.ReadStatement(textReader);
             if (decimal.TryParse(expression, out result))
             {
-                return Expression.Constant(result);
+                return Statement.CreateStatement(typeof(decimal), Expression.Constant(result));
             }
             else
             {
