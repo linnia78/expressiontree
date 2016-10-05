@@ -29,6 +29,19 @@ namespace UnitTestProject1
             // 8
         }
 
+        //[TestMethod]
+        //public void IfThen()
+        //{
+        //    var param = Expression.Variable(typeof(string), "param");
+        //    var assignmentExpression = Expression.Assign(param, Expression.Constant("true"));
+        //    System.Diagnostics.Debug.WriteLine(assignmentExpression.ToString());
+        //    var expression = Expression.IfThen(Expression.Constant(true), assignmentExpression);
+        //    var lambda = Expression.Lambda<Action<string>>(expression, param);
+        //    var compiled = lambda.Compile();
+        //    var result = string.Empty;
+        //    compiled(result);
+        //}
+
         [TestMethod]
         public void TestParameters()
         {
@@ -71,6 +84,14 @@ namespace UnitTestProject1
             var evaluator = new ExpressionEvaluator();
             var expression = evaluator.Build("a=\"b\"&a=\"b\"");
             var result = expression(dictionary);
+        }
+
+        [TestMethod]
+        public void OtherTest()
+        {
+            var dictionary = new Dictionary<string, string> { { "a", "b" } };
+            var result = dictionary["a"];
+            var type = result.GetType();
         }
     }
 

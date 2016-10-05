@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
-namespace UnitTestProject1.ExpressionTree2
+namespace UnitTestProject1.ExpressionTree3
 {
     [TestClass]
     public class ExpressionEvaluatorTest
@@ -126,12 +127,86 @@ namespace UnitTestProject1.ExpressionTree2
         {
             //Arrange
             var evaluator = new ExpressionEvaluator();
-            var dictionary = new Dictionary<string, string> { { "a", "20" } };
+            var dictionary = new Dictionary<string, string> { { "a", "20" }, { "b", null } };
             var expression = evaluator.Compile<Dictionary<string, string>>(@"""20"" == [a] && 20 > 5");
+            var expression2 = evaluator.Compile<Dictionary<string, string>>("null == [b]");
             //Act
             var result = expression(dictionary);
+            var result2 = expression2(dictionary);
             //Assert
             Assert.AreEqual(result, "20".Equals(dictionary["a"]) && 20 > 5);
+            Assert.AreEqual(result2, dictionary["b"] == null);
+        }
+
+        [TestMethod]
+        public void should_eval_complex_type()
+        {
+            //Arrange
+            var evaluator = new ExpressionEvaluator();
+            var dictionary = new Dictionary<string, object> { { "a", 20m }, { "b", "100" } };
+            var expression = evaluator.Compile<Dictionary<string, object>>("20 > [a]");
+            var expression2 = evaluator.Compile<Dictionary<string, object>>("20 > [b]");
+            //Act
+            var result = expression(dictionary);
+            var result2 = expression(dictionary);
+            //Assert
+            Assert.AreEqual(result, 20 > (decimal)dictionary["a"]);
+            Assert.AreEqual(result2, 20 > Convert.ToDecimal(dictionary["b"]));
+        }
+
+        [TestMethod]
+        public void should_eval_paranthesis()
+        {
+            //Arrange
+            var evaluator = new ExpressionEvaluator();
+            var dictionary = new Dictionary<string, object> { { "a", 20m }, { "b", "100" } };
+            var expression = evaluator.Compile<Dictionary<string, object>>("(1 + 2) * 3 > 10");
+            var expression2 = evaluator.Compile<Dictionary<string, object>>("(1 + [b]) * 2 > 100");
+            //Act
+            var result = expression(dictionary);
+            var result2 = expression2(dictionary);
+            //Assert
+            Assert.AreEqual(result, (1 + 2) * 3 > 10);
+            Assert.AreEqual(result2, (1 + Convert.ToDecimal(dictionary["b"])) * 2 > 100);
+        }
+
+        [TestMethod]
+        public void test()
+        {
+            var method = typeof(Convert).GetMethod("ChangeType", new Type[] { typeof(object), typeof(Type) });
+            var result = method.Invoke(null, new object[] { 20, typeof(decimal) });
+        }
+
+        [TestMethod]
+        public void test2()
+        {
+            var expression = Expression.Call(null, typeof(Convert).GetMethod("ChangeType", new Type[] { typeof(object), typeof(Type) }), Expression.Constant("20", typeof(object)), Expression.Constant(typeof(decimal)));
+            var lambda = Expression.Lambda<Func<object>>(expression);
+            var result = lambda.Compile()();
+
+            var expression2 = Expression.Call(null, typeof(Convert).GetMethod("ToString", new Type[] { typeof(int) }), Expression.Constant(20));
+            var lambda2 = Expression.Lambda<Func<string>>(expression2);
+            var result2 = lambda2.Compile()();
+        }
+
+        [TestMethod]
+        public void test3()
+        {
+            var param = Expression.Parameter(typeof(Person), "person");
+            var property = typeof(Person).GetProperty("Value");
+            var method = typeof(Convert).GetMethod("ToDecimal", new Type[] { typeof(object) });
+            var value = Expression.Call(null, method, Expression.Property(param, property));
+
+            var expression = Expression.GreaterThan(value, Expression.Constant(100m));
+            var lambda = Expression.Lambda<Func<Person, bool>>(expression, param);
+            var compiled = lambda.Compile();
+            var result = compiled(new Person { Value = "20" });
+            var result2 = compiled(new Person { Value = "1000" });
+        }
+
+        public class Person
+        {
+            public string Value { get; set; }
         }
     }
 }

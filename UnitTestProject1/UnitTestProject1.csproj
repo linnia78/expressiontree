@@ -53,6 +53,25 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="ExpressionTree3\Blank\BlankParser.cs" />
+    <Compile Include="ExpressionTree3\Blank\BlankReader.cs" />
+    <Compile Include="ExpressionTree3\ExpressionEvaluator.cs" />
+    <Compile Include="ExpressionTree3\ExpressionEvaluatorTest.cs" />
+    <Compile Include="ExpressionTree3\Input\ParamParser.cs" />
+    <Compile Include="ExpressionTree3\Input\ParamReader.cs" />
+    <Compile Include="ExpressionTree3\Numeric\NumericParser.cs" />
+    <Compile Include="ExpressionTree3\Numeric\NumericReader.cs" />
+    <Compile Include="ExpressionTree3\Operation\Operation.cs" />
+    <Compile Include="ExpressionTree3\Operation\OperationParser.cs" />
+    <Compile Include="ExpressionTree3\Operation\OperationReader.cs" />
+    <Compile Include="ExpressionTree3\Quotation\QuotationParser.cs" />
+    <Compile Include="ExpressionTree3\Quotation\QuotationReader.cs" />
+    <Compile Include="ExpressionTree3\ReservedWord\ReservedWord.cs" />
+    <Compile Include="ExpressionTree3\ReservedWord\ReservedWordParser.cs" />
+    <Compile Include="ExpressionTree3\ReservedWord\ReservedWordReader.cs" />
+    <Compile Include="ExpressionTree3\StatementParser.cs" />
+    <Compile Include="ExpressionTree3\StatementReader.cs" />
+    <Compile Include="ExpressionTree3\Statement\Statement.cs" />
     <Compile Include="ExpressionTree2\Blank\BlankParser.cs" />
     <Compile Include="ExpressionTree2\Blank\BlankReader.cs" />
     <Compile Include="ExpressionTree2\ExpressionEvaluator.cs" />
@@ -74,7 +93,6 @@
     <Compile Include="ExpressionTree2\Statement\Statement.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest2.cs" />
   </ItemGroup>
   <ItemGroup />
   <Choose>

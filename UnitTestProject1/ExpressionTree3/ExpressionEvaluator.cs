@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnitTestProject1.ExpressionTree2
+namespace UnitTestProject1.ExpressionTree3
 {
     public class ExpressionEvaluator
     {
@@ -45,8 +45,21 @@ namespace UnitTestProject1.ExpressionTree2
                     else if (this._operationParser.CanParse(next))
                     {
                         var currentOperation = this._operationParser.ParseOperation(reader);
-                        EvaluateWhile(() => _operationStack.Count > 0 && currentOperation.Precedence >= _operationStack.Peek().Precedence);
-                        _operationStack.Push(currentOperation);
+                        if (currentOperation == Operation.LeftParanthesis)
+                        {
+                            _operationStack.Push(currentOperation);
+                            continue;
+                        }
+                        else if (currentOperation == Operation.RightParanthesis)
+                        {
+                            EvaluateWhile(() => _operationStack.Count > 0 && _operationStack.Peek() != Operation.LeftParanthesis);
+                            _operationStack.Pop();
+                        }
+                        else
+                        {
+                            EvaluateWhile(() => _operationStack.Count > 0 && currentOperation.Precedence >= _operationStack.Peek().Precedence && _operationStack.Peek() != Operation.LeftParanthesis);
+                            _operationStack.Push(currentOperation);
+                        }
                     }
                     else
                     {
@@ -84,8 +97,22 @@ namespace UnitTestProject1.ExpressionTree2
                     else if (this._operationParser.CanParse(next))
                     {
                         var currentOperation = this._operationParser.ParseOperation(reader);
-                        EvaluateWhile(() => _operationStack.Count > 0 && currentOperation.Precedence >= _operationStack.Peek().Precedence);
-                        _operationStack.Push(currentOperation);
+                        if (currentOperation == Operation.LeftParanthesis)
+                        {
+                            _operationStack.Push(currentOperation);
+                            continue;
+                        }
+                        else if (currentOperation == Operation.RightParanthesis)
+                        {
+                            EvaluateWhile(() => _operationStack.Count > 0 && _operationStack.Peek() != Operation.LeftParanthesis);
+                            _operationStack.Pop();
+                        }
+                        else
+                        {
+                            EvaluateWhile(() => _operationStack.Count > 0 && currentOperation.Precedence >= _operationStack.Peek().Precedence);
+                            _operationStack.Push(currentOperation);
+                        }
+                        
                     }
                     else
                     {
@@ -103,14 +130,17 @@ namespace UnitTestProject1.ExpressionTree2
 
         private void EvaluateWhile(Func<bool> condition)
         {
-            while(condition())
+            while (condition())
             {
                 var operation = _operationStack.Pop();
 
                 var expressions = new Expression[operation.NumberOfOperands];
                 for (var i = operation.NumberOfOperands - 1; i >= 0; i--)
                 {
-                    expressions[i] = _statementStack.Pop().Expression;
+                    var expression = _statementStack.Pop().Expression;
+                    expressions[i] = operation.RequiredType == typeof(decimal) && expression.Type != typeof(decimal)
+                        ? Expression.Call(null, typeof(Convert).GetMethod("ToDecimal", new Type[] { typeof(object) }), expression)
+                        : expression;
                 }
                 _statementStack.Push(Statement.CreateStatement(typeof(object), operation.Apply(expressions)));
             }

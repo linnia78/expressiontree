@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnitTestProject1.ExpressionTree2
+namespace UnitTestProject1.ExpressionTree3
 {
     public class ParamParser : StatementParser
     {
@@ -16,8 +17,12 @@ namespace UnitTestProject1.ExpressionTree2
             string statement = base._expressionReader.ReadStatement(textReader);
             var keyParam = Expression.Constant(statement);
             var result = Expression.Parameter(typeof(object), "result");
-            var block = Expression.Block(new[] { result }, Expression.Assign(result, Expression.Property(param, "Item", keyParam)), result);
-            
+            var block = Expression.Block(
+                new[] { result }, 
+                Expression.Assign(result, Expression.Property(param, "Item", keyParam)), 
+                result
+            );
+
             return Statement.CreateStatement(typeof(string), block);
         }
     }
