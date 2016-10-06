@@ -208,5 +208,72 @@ namespace UnitTestProject1.ExpressionTree3
         {
             public string Value { get; set; }
         }
+
+        [TestMethod]
+        public void test_if_then_assignment()
+        {
+            var param = Expression.Parameter(typeof(string), "param");
+            var expression = Expression.Assign(param, Expression.Constant("Hello!"));
+            var lambda = Expression.Lambda<Action<string>>(expression, param);
+            var compiled = lambda.Compile();
+            
+            var result = string.Empty;
+            compiled(result);
+
+
+            var fn = (Action<string>)((s) => s = "Hello!");
+        }
+
+        [TestMethod]
+        public void test_dictionary_assignment()
+        {
+            var keyParam = Expression.Parameter(typeof(string), "key");
+            var param = Expression.Parameter(typeof(Dictionary<string, string>), "param");
+            var valueParam = Expression.Parameter(typeof(string), "value");
+            var block = Expression.Block(
+                    Expression.Assign(Expression.Property(param, "Item", keyParam), valueParam)
+                );
+            var expression = Expression.Lambda<Action<Dictionary<string, string>, string, string>>(block, param, keyParam, valueParam);
+            var compiled = expression.Compile();
+
+            var dictionary = new Dictionary<string, string> { { "a", "a" } };
+            compiled(dictionary, "a", "Hello");
+        }
+
+        [TestMethod]
+        public void test_object_assignment()
+        {
+            var param = Expression.Parameter(typeof(Person), "param");
+            var trueParam = Expression.Parameter(typeof(string), "value");
+            var falseParam = Expression.Parameter(typeof(string), "value");
+            var block = Expression.Block(
+                    Expression.IfThenElse(Expression.GreaterThan(Expression.Constant(2), Expression.Constant(1)), 
+                        Expression.Assign(Expression.Property(param, "Value"), trueParam),
+                        Expression.Assign(Expression.Property(param, "Value"), falseParam)
+                    )
+                );
+            var expression = Expression.Lambda<Action<Person, string, string>>(block, param, trueParam, falseParam);
+            var compiled = expression.Compile();
+
+            var person = new Person { Value = "a" };
+            compiled(person, "true", "false");
+        }
+
+        [TestMethod]
+        public void test_assignment()
+        {
+            ParameterExpression xparam = Expression.Parameter(typeof(Person), "x");
+            ParameterExpression yparam = Expression.Parameter(typeof(Person), "y");
+            BinaryExpression body = Expression.Assign(yparam, xparam);
+            var expr = Expression.Lambda<Action<Person, Person>>(body, xparam, yparam);
+            var cexpr = expr.Compile();
+            var a = new Person { Value = "a" };
+            var b = new Person { Value = "b" };
+            cexpr(a, b);
+
+            Action<Person> action = (va) => va.Value = "Hello";
+            var v = new Person();
+            action(v);
+        }
     }
 }
