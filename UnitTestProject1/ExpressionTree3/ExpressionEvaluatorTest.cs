@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace UnitTestProject1.ExpressionTree3
 {
@@ -275,5 +276,92 @@ namespace UnitTestProject1.ExpressionTree3
             var v = new Person();
             action(v);
         }
+
+        public class Helper
+        {
+            public void DoSomething(string msg)
+            {
+                System.Diagnostics.Debug.WriteLine("Helper executed;");
+                System.Diagnostics.Debug.WriteLine(msg);
+            }
+        }
+
+        [TestMethod]
+        public void test_helper()
+        {
+            var helper = Expression.Parameter(typeof(Helper), "Helper");
+            var msgParam = Expression.Parameter(typeof(string), "msgParam");
+            var expression = Expression.Call(helper, helper.Type.GetMethod("DoSomething"), msgParam);
+            var lambda = Expression.Lambda(expression, helper, msgParam);
+            var compiled = (Action<Helper, string>)lambda.Compile();
+
+            var helperObj = new Helper();
+            var msg = "Test";
+            compiled(helperObj, msg);
+            
+        }
+
+        [TestMethod]
+        public void test_factorial()
+        {
+            var factorialParam = Expression.Parameter(typeof(int), "factorialParam");
+            var resultParam = Expression.Parameter(typeof(int), "result");
+            var label = Expression.Label(typeof(int));
+            var expression = Expression.Block(
+                new[] { resultParam },
+                Expression.Assign(resultParam, Expression.Constant(1)),
+                Expression.Loop(
+                    Expression.IfThenElse(
+                        Expression.GreaterThan(factorialParam, Expression.Constant(1)),
+                        Expression.MultiplyAssign(resultParam, Expression.PostDecrementAssign(factorialParam)),
+                        Expression.Break(label, resultParam)
+                    ), label)
+                );
+
+            var labmda = Expression.Lambda(expression, factorialParam);
+            var compiled = (Func<int, int>)labmda.Compile();
+
+            var result = compiled(3);
+            var result2 = compiled(4);
+            var result3 = compiled(5);
+            var result4 = compiled(6);
+        }
+
+        public static void TwiceTheInputByRef(ref int x)
+        {
+            x = x * 2;
+        }
+
+        [TestMethod]
+        public void test_reference_update()
+        {
+            var inputVar = Expression.Variable(typeof(int), "input");
+            var blockExp = Expression.Block(
+                new[] { inputVar }
+                , Expression.Assign(inputVar, Expression.Constant(10))
+                , Expression.Call(
+                    typeof(ExpressionEvaluatorTest).GetMethod(
+                        "TwiceTheInputByRef", new[] { typeof(int).MakeByRefType() }),
+                    inputVar)
+                , inputVar);
+            var lambda = Expression.Lambda(blockExp, inputVar);
+            var compiled = (Func<int, int>)lambda.Compile();
+            
+            var temp = 1;
+            var result = compiled(temp);
+        }
+
+        public event Log Logged;
+        public delegate void Log(string s);
+        [TestMethod]
+        public void delegates_and_events()
+        {
+            var del = (Log)(x => System.Diagnostics.Debug.WriteLine(x));
+            Logged += del;
+            Logged += del;
+            Logged += s => System.Diagnostics.Debug.WriteLine(s + "yo");
+            Logged("yo");
+        }
+        
     }
 }

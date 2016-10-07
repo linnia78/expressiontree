@@ -8,3 +8,11 @@ C:\My\Work\expressiontree\UnitTestProject1\bin\Debug\UnitTestProject1.pdb
 C:\My\Work\expressiontree\UnitTestProject1\obj\Debug\UnitTestProject1.csprojResolveAssemblyReference.cache
 C:\My\Work\expressiontree\UnitTestProject1\obj\Debug\UnitTestProject1.dll
 C:\My\Work\expressiontree\UnitTestProject1\obj\Debug\UnitTestProject1.pdb
+C:\My\Projects\CSharpPlay\UnitTestProject1\bin\Debug\Microsoft.CodeAnalysis.CSharp.dll
+C:\My\Projects\CSharpPlay\UnitTestProject1\bin\Debug\Microsoft.CodeAnalysis.dll
+C:\My\Projects\CSharpPlay\UnitTestProject1\bin\Debug\System.Collections.Immutable.dll
+C:\My\Projects\CSharpPlay\UnitTestProject1\bin\Debug\System.Reflection.Metadata.dll
+C:\My\Projects\CSharpPlay\UnitTestProject1\bin\Debug\Microsoft.CodeAnalysis.xml
+C:\My\Projects\CSharpPlay\UnitTestProject1\bin\Debug\Microsoft.CodeAnalysis.CSharp.xml
+C:\My\Projects\CSharpPlay\UnitTestProject1\bin\Debug\System.Collections.Immutable.xml
+C:\My\Projects\CSharpPlay\UnitTestProject1\bin\Debug\System.Reflection.Metadata.xml
